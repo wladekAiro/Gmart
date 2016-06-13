@@ -1,0 +1,190 @@
+package com.wladek.Gmart.web.admin;
+
+import com.wladek.Gmart.domain.BuyingPointCost;
+import com.wladek.Gmart.domain.Customer;
+import com.wladek.Gmart.domain.SellingPointCost;
+import com.wladek.Gmart.domain.enumeration.PointCostStatus;
+import com.wladek.Gmart.pojo.RewardForm;
+import com.wladek.Gmart.service.CustomerService;
+import com.wladek.Gmart.service.PointsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
+
+/**
+ * Created by wladek on 6/8/16.
+ */
+@Controller
+@RequestMapping(value = "/administrator/manage")
+public class AdminCustomerController {
+    @Autowired
+    CustomerService customerService;
+    @Autowired
+    PointsService pointsService;
+
+    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    public String index(Model model) {
+        return "/customer/index";
+    }
+
+    @RequestMapping(value = "/customers", method = RequestMethod.GET)
+    public String customers(@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+                            @RequestParam(value = "size", required = false, defaultValue = "10") int size, Model model) {
+        Page<Customer> customerPage = customerService.findAll(page, size);
+
+        model.addAttribute("rewardForm", new RewardForm());
+        model.addAttribute("customerPage", customerPage);
+        model.addAttribute("customer", new Customer());
+        model.addAttribute("pagenatedUrl", "/admin/manage/customers");
+
+        return "/customer/customers";
+    }
+
+    @RequestMapping(value = "/customers", method = RequestMethod.POST)
+    public String postCustomer(@Valid @ModelAttribute("customer") Customer customer, BindingResult result,
+                               @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+                               @RequestParam(value = "size", required = false, defaultValue = "10") int size, Model model,
+                               RedirectAttributes redirectAttributes) {
+
+        if (result.hasErrors()){
+
+            Page<Customer> customerPage = customerService.findAll(page, size);
+
+            model.addAttribute("message" , true);
+            model.addAttribute("content" , "Form has errors");
+            model.addAttribute("customer", customer);
+            model.addAttribute("customerPage", customerPage);
+            model.addAttribute("pagenatedUrl", "/admin/manage/customers");
+
+            return "/customer/customers";
+        }
+
+        Customer newCustomer = customerService.create(customer);
+
+        redirectAttributes.addFlashAttribute("message" , true);
+        redirectAttributes.addFlashAttribute("content" , "Customer registered succesfully");
+
+        return "redirect:/administrator/manage/customers";
+    }
+
+    @RequestMapping(value = "/points", method = RequestMethod.GET)
+    public String points( Model model) {
+
+        BuyingPointCost setBuyingCost = pointsService.getActiveBuyingPointCost(PointCostStatus.ACTIVE);
+        SellingPointCost setSellingCost = pointsService.getActiveSellingPointCost(PointCostStatus.ACTIVE);
+
+        model.addAttribute("buyingPointCost" , new BuyingPointCost());
+        model.addAttribute("sellingPointCost" , new SellingPointCost());
+        model.addAttribute("setBuyingCost" , setBuyingCost);
+        model.addAttribute("setSellingCost" , setSellingCost);
+
+        return "/customer/points";
+    }
+
+    @RequestMapping(value = "/setBuying", method = RequestMethod.POST)
+    public String setBuyingCost(@Valid @ModelAttribute("buyingPointCost") BuyingPointCost buyingPointCost,BindingResult result,
+                                RedirectAttributes redirectAttributes , Model model) {
+
+        if (result.hasErrors()){
+            BuyingPointCost setBuyingCost = pointsService.getActiveBuyingPointCost(PointCostStatus.ACTIVE);
+            SellingPointCost setSellingCost = pointsService.getActiveSellingPointCost(PointCostStatus.ACTIVE);
+
+            model.addAttribute("buyingPointCost" , new BuyingPointCost());
+            model.addAttribute("sellingPointCost" , new SellingPointCost());
+            model.addAttribute("setBuyingCost" , setBuyingCost);
+            model.addAttribute("setSellingCost" , setSellingCost);
+
+            model.addAttribute("message" , true);
+            model.addAttribute("content" , " Buying points form has errors, click on Buying cost button to view");
+
+            return "/customer/points";
+        }
+
+        pointsService.setBuyingCost(buyingPointCost);
+
+        redirectAttributes.addFlashAttribute("message" , true);
+        redirectAttributes.addFlashAttribute("content" , "Buying cost set succesfully");
+
+        return "redirect:/administrator/manage/points";
+    }
+
+    @RequestMapping(value = "/setSelling", method = RequestMethod.POST)
+    public String setSellingCost(@Valid @ModelAttribute("sellingPointCost") SellingPointCost sellingPointCost,BindingResult result,
+                                RedirectAttributes redirectAttributes , Model model) {
+
+        if (result.hasErrors()){
+            BuyingPointCost setBuyingCost = pointsService.getActiveBuyingPointCost(PointCostStatus.ACTIVE);
+            SellingPointCost setSellingCost = pointsService.getActiveSellingPointCost(PointCostStatus.ACTIVE);
+
+            model.addAttribute("buyingPointCost" , new BuyingPointCost());
+            model.addAttribute("sellingPointCost" , sellingPointCost);
+            model.addAttribute("setBuyingCost" , setBuyingCost);
+            model.addAttribute("setSellingCost" , setSellingCost);
+
+            model.addAttribute("message" , true);
+            model.addAttribute("content" , " Selling points form has errors, click on Selling cost button to view");
+
+            return "/customer/points";
+        }
+
+        pointsService.setSellingCost(sellingPointCost);
+
+        redirectAttributes.addFlashAttribute("message" , true);
+        redirectAttributes.addFlashAttribute("content" , "Selling cost set succesfully");
+
+        return "redirect:/administrator/manage/points";
+    }
+
+    @RequestMapping(value = "/customers/search", method = RequestMethod.POST)
+    public String search(@ModelAttribute("rewardForm") RewardForm rewardForm , Model model , RedirectAttributes redirectAttributes) {
+
+        Page<Customer> customerPage = customerService.findByPhoneNumberPaged(rewardForm.getPhoneNumber());
+
+        if (customerPage.getContent().size() < 1){
+            redirectAttributes.addFlashAttribute("message", true);
+            redirectAttributes.addFlashAttribute("content", " No customer found with that phone number ");
+            return "redirect:/administrator/manage/customers";
+        }
+
+        model.addAttribute("rewardForm", new RewardForm());
+        model.addAttribute("customerPage", customerPage);
+        model.addAttribute("customer", new Customer());
+        model.addAttribute("pagenatedUrl", "/admin/manage/customers");
+
+        return "/customer/customers";
+    }
+
+    @RequestMapping(value = "/customers/{id}/view", method = RequestMethod.GET)
+    public String view(@PathVariable("id") Long id, Model model) {
+
+        Customer customer = customerService.findOne(id);
+
+        model.addAttribute("customer", customer);
+        model.addAttribute("rewardForm", new RewardForm());
+
+        return "/customer/customer";
+    }
+
+    @RequestMapping(value = "/customer/redeem", method = RequestMethod.POST)
+    public String redeem(@ModelAttribute("rewardForm") RewardForm rewardForm , RedirectAttributes redirectAttributes) {
+
+        String response = null;
+
+        if(rewardForm.getAmount() == null){
+            response = "Provide points to redeem";
+        }else{
+            response = customerService.redeemPoints(rewardForm.getPhoneNumber() , rewardForm.getAmount());
+        }
+
+        redirectAttributes.addFlashAttribute("message", true);
+        redirectAttributes.addFlashAttribute("content", response);
+
+        return "redirect:/administrator/manage/customers/"+rewardForm.getId()+"/view";
+    }
+}
