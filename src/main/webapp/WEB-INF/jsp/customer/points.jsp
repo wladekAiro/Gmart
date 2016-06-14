@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
     <jsp:include page="/WEB-INF/jsp/common/adminHeader.jsp">
-        <jsp:param name="title" value="PAKMART"/>
+        <jsp:param name="title" value="GIFT-MART"/>
     </jsp:include>
 </head>
 <jsp:include page="/WEB-INF/jsp/common/usersHead.jsp"/>

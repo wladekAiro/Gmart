@@ -6,7 +6,7 @@
 <html lang="en">
 <head>
     <jsp:include page="/WEB-INF/jsp/common/head.jsp">
-        <jsp:param name="title" value="PAKMART"/>
+        <jsp:param name="title" value="GIFT-MART"/>
     </jsp:include>
     <link type="text/css" href="/resources/css/carousel.css" rel="stylesheet">
 </head>
@@ -27,9 +27,9 @@
         <div class="item active">
             <img src="/resources/images/logo.jpg" alt="First slide">
             <div class="container">
-                <div class="carousel-caption">
-                    <h1>PAKMART SUPERMARKET</h1>
-                    <p>Just for you...</p>
+                <div>
+                    <h1></h1>
+                    <p>&nbsp;</p>
                     <%--<p><a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a></p>--%>
                 </div>
             </div>
@@ -136,7 +136,7 @@
     <!-- FOOTER -->
     <footer>
         <%--<p class="pull-right"><a href="#">Back to top</a></p>--%>
-        <p>&copy;2016 PakMart Supermarket.</p>
+        <p>&copy;2016 GMart Supermarket.</p>
     </footer>
 
 <!--</div><!-- /.container -->

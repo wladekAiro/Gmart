@@ -9,12 +9,15 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">PAKMART SUPERMARKET</a>
+            <a class="navbar-brand" href="/">GIFT-MART SUPERMARKET</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <sec:authorize access="isAnonymous()">
                     <%--<li><a href="/users/signupform">Signup</a></li>--%>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About us</a></li>
+                    <li><a href="#">Contact us</a></li>
                     <li><a href="/users/loginform">Login</a></li>
                 </sec:authorize>
                 <sec:authorize access="isAuthenticated()">
@@ -31,7 +34,7 @@
                 </sec:authorize>
             </ul>
             <form class="navbar-form navbar-right">
-                <input type="text" class="form-control" placeholder="Search...">
+                <%--<input type="text" class="form-control" placeholder="Search...">--%>
             </form>
         </div>
     </div>

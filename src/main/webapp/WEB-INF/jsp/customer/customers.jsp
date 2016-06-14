@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
     <jsp:include page="/WEB-INF/jsp/common/adminHeader.jsp">
-        <jsp:param name="title" value="PAKMART"/>
+        <jsp:param name="title" value="GIFT-MART"/>
     </jsp:include>
 </head>
 <jsp:include page="/WEB-INF/jsp/common/usersHead.jsp"/>
@@ -58,9 +58,10 @@
                             <div class="box-tools">
                                 <div class="input-group">
                                     <form:form method="post" action="/administrator/manage/customers/search" modelAttribute="rewardForm">
-                                        <form:input path="phoneNumber" type="text" name="table_search" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search by phone"/>
+                                        <form:input path="phoneNumber" type="text" name="table_search" class="form-control input-sm" style="width: 150px;" placeholder="Search by phone"/>
                                         <div class="input-group-btn">
-                                            <input class="btn btn-sm btn-default" type="submit"><i class="fa fa-search"></i></input>
+                                            <button type='submit' class="btn btn-default"><i class="fa fa-search"></i>
+                                            </button>
                                         </div>
                                     </form:form>
                                 </div>
