@@ -50,9 +50,9 @@
             <artifactId>h2</artifactId>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>postgresql</groupId>-->
-            <!--<artifactId>postgresql</artifactId>-->
-            <!--<version>9.1-901-1.jdbc4</version>-->
+        <!--<groupId>postgresql</groupId>-->
+        <!--<artifactId>postgresql</artifactId>-->
+        <!--<version>9.1-901-1.jdbc4</version>-->
         <!--</dependency>-->
         <dependency>
             <groupId>mysql</groupId>
@@ -74,13 +74,13 @@
 
         <!--&lt;!&ndash; QueryDSL &ndash;&gt;-->
         <!--<dependency>-->
-            <!--<groupId>com.mysema.querydsl</groupId>-->
-            <!--<artifactId>querydsl-apt</artifactId>-->
-            <!--<scope>provided</scope>-->
+        <!--<groupId>com.mysema.querydsl</groupId>-->
+        <!--<artifactId>querydsl-apt</artifactId>-->
+        <!--<scope>provided</scope>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>com.mysema.querydsl</groupId>-->
-            <!--<artifactId>querydsl-jpa</artifactId>-->
+        <!--<groupId>com.mysema.querydsl</groupId>-->
+        <!--<artifactId>querydsl-jpa</artifactId>-->
         <!--</dependency>-->
 
         <!-- Utils -->
@@ -102,6 +102,18 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk</artifactId>
+            <version>1.9.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.httpcomponents</groupId>
+                    <artifactId>httpcore</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -110,24 +122,24 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                     <mainClass>com.wladek.Gmart.Application</mainClass>
+                    <mainClass>com.wladek.Gmart.Application</mainClass>
                 </configuration>
             </plugin>
             <!--<plugin>-->
-                <!--<groupId>com.mysema.maven</groupId>-->
-                <!--<artifactId>apt-maven-plugin</artifactId>-->
-                <!--<version>1.0.6</version>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<goals>-->
-                            <!--<goal>process</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
-                            <!--<outputDirectory>target/generated-sources/java</outputDirectory>-->
-                            <!--<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>-->
-                        <!--</configuration>-->
-                    <!--</execution>-->
-                <!--</executions>-->
+            <!--<groupId>com.mysema.maven</groupId>-->
+            <!--<artifactId>apt-maven-plugin</artifactId>-->
+            <!--<version>1.0.6</version>-->
+            <!--<executions>-->
+            <!--<execution>-->
+            <!--<goals>-->
+            <!--<goal>process</goal>-->
+            <!--</goals>-->
+            <!--<configuration>-->
+            <!--<outputDirectory>target/generated-sources/java</outputDirectory>-->
+            <!--<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>-->
+            <!--</configuration>-->
+            <!--</execution>-->
+            <!--</executions>-->
             <!--</plugin>-->
         </plugins>
     </build>
@@ -140,8 +152,8 @@
             </activation>
             <dependencies>
                 <!--<dependency>-->
-                    <!--<groupId>org.springframework.boot</groupId>-->
-                    <!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
+                <!--<groupId>org.springframework.boot</groupId>-->
+                <!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
                 <!--</dependency>-->
                 <dependency>
                     <groupId>org.apache.tomcat.embed</groupId>
